@@ -24,13 +24,15 @@ import requests
 class Menu:
     """Model a simple menu that provides many options to the user."""
 
-    def __init__(self, name='generic menu', options='No options have been added.'):
+    def __init__(self, options, name='generic menu'):
         """Initialize the main options of the menu and set its name."""
         # We pass options as a list and convert it to a dictionary starting from 1
         self.name = name
-        self._options = dict(enumerate(options, start=1))
 
-    def _get_input(self):
+        options.append('Quit\n')
+        self.options = dict(enumerate(options, start=1))
+
+    def get_input(self):
         """Get user input."""
         answer = int(input('Please enter an option: ')) # the option is always a numerical value
         return answer
@@ -39,19 +41,43 @@ class Menu:
         """List all options and a shiny ascii art title."""
         print(f'{self.name}\n')
 
-        for number, option in self._options.items():
+        for number, option in self.options.items():
             print(f"{number}. {option if type(option) is str else option['value']}")
-        print(f'{len(self._options.keys()) + 1}. Quit\n')
 
-        self._get_input()
-
-    def add_submenu(self, option=1, options='No options have been added.'):
+    def add_submenu(self, suboptions, option=1):
         """Add a submenu with a main option provided."""
-        main_option = self._options[option]
+        main_option = self.options[option]
+
+        suboptions.append('Go back')
+        suboptions.append('Quit\n')
 
         # The top-level option is now a dictionary consisting of its value and its submenu.
-        self._options[option] = {
+        self.options[option] = {
             'value': main_option,
-            'submenu': dict(enumerate(options, start=1))
+            'submenu': dict(enumerate(suboptions, start=1))
         }
+
+
+menu = Menu(options=['Select this',
+                     'Select that',
+                     'No select this'],
+            name='snooker general 1.0')
+
+menu.add_submenu(suboptions=['what now',
+                             'do not do this again'],
+                 option=2)
+
+menu.show_menu()
+
+while True:
+    option = menu.get_input()
+
+    if option not in menu.options.keys():
+        print("\nThat's not a valid option!")
+        break
+    elif option == len(menu.options):  # last option is always quit
+        break
+    else:
+        determine_action(option)  # to be implemented
+
 

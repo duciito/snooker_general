@@ -66,6 +66,9 @@ class Menu:
             print(f"{number}. {option}")
 
 
+def show_info():
+    print('jsadjf')
+
 menu = Menu(options=['Select this',
                      'Select that',
                      'No select this'],
@@ -89,21 +92,22 @@ def determine_options():
 
     return tuple(options)  # options are already chosen and thus immutable
 
-def determine_action(options):
+def determine_action(options, funcs):
     """Perform a specific task based on user input."""
     main_option = options[0]
-
-    if main_option == list(menu.options)[-1]:
-        return
 
     if len(options) == 2:
         suboption = options[1]
 
-        if suboption == list(menu.options[main_option]['submenu'])[-1]:  # last option on submenus is go back
+        if suboption == list(funcs[main_option])[-1]:  # last option on submenus is go back
             os.system('clear')
 
             options = determine_options()
-            determine_action(options)
+            funcs[main_option][suboption](options, funcs)
+
+        funcs[main_option][suboption]()
+
+    funcs[main_option]()
 
 
 
@@ -118,5 +122,18 @@ def determine_action(options):
 #     else:
 #         determine_action(option)  # to be implemented
 
+# store main funcs in a dict
+
+funcs = {
+    1: show_info,
+    2: {
+        1: show_info,
+        2: show_info,
+        3: determine_action
+    },
+    3: show_info,
+    4: quit
+}
+
 options = determine_options()
-determine_action(options)
+determine_action(options, funcs)

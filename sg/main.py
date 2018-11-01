@@ -49,7 +49,6 @@ class Menu:
         main_option = self.options[option]
 
         suboptions.append('Go back')
-        suboptions.append('Quit\n')
 
         # The top-level option is now a dictionary consisting of its value and its submenu.
         self.options[option] = {
@@ -76,19 +75,48 @@ menu.add_submenu(suboptions=['what now',
                              'do not do this again'],
                  option=2)
 
-menu.show_menu()
+def determine_options():
+    """Determine what option the user chooses (considering all submenus)"""
+    menu.show_menu()
+    options = [menu.get_input()]
 
-while True:
-    option = menu.get_input()
+    # Get a suboption.
+    if isinstance(menu.options[options[0]], dict):  # check to see if there is a submenu
+        os.system('clear')
 
-    if option not in menu.options.keys():
-        print("\nThat's not a valid option!")
-        break
-    elif option == len(menu.options):  # last option is always quit
-        break
-    else:
-        if menu.options[option]['submenu']:
-            menu.show_submenu(option)
-        #determine_action(option)  # to be implemented
+        menu.show_submenu(options[0])
+        options.append(menu.get_input())
+
+    return tuple(options)  # options are already chosen and thus immutable
+
+def determine_action(options):
+    """Perform a specific task based on user input."""
+    main_option = options[0]
+
+    if main_option == list(menu.options)[-1]:
+        return
+
+    if len(options) == 2:
+        suboption = options[1]
+
+        if suboption == list(menu.options[main_option]['submenu'])[-1]:  # last option on submenus is go back
+            os.system('clear')
+
+            options = determine_options()
+            determine_action(options)
 
 
+
+# while True:
+#
+#
+#     if option not in menu.options.keys():
+#         print("\nThat's not a valid option!")
+#         break
+#     elif option == len(menu.options):  # last option is always quit
+#         break
+#     else:
+#         determine_action(option)  # to be implemented
+
+options = determine_options()
+determine_action(options)

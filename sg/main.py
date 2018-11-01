@@ -57,6 +57,15 @@ class Menu:
             'submenu': dict(enumerate(suboptions, start=1))
         }
 
+    def show_submenu(self, main_option):
+        """Show a submenu of the provided main option."""
+        if not self.options[main_option]['submenu']:
+            print('This option has no submenu.')
+            return
+
+        for number, option in self.options[main_option]['submenu'].items():
+            print(f"{number}. {option}")
+
 
 menu = Menu(options=['Select this',
                      'Select that',
@@ -78,6 +87,8 @@ while True:
     elif option == len(menu.options):  # last option is always quit
         break
     else:
-        determine_action(option)  # to be implemented
+        if menu.options[option]['submenu']:
+            menu.show_submenu(option)
+        #determine_action(option)  # to be implemented
 
 

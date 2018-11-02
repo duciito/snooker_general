@@ -40,7 +40,7 @@ class Menu:
         """Show a submenu of the provided main option."""
         if not self.options[main_option]['submenu']:
             print('This option has no submenu.')
-            return
+            return None
 
         for number, option in self.options[main_option]['submenu'].items():
             print(f"{number}. {option}")

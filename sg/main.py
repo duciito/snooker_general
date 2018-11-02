@@ -1,5 +1,3 @@
-"""The main entry point of the program."""
-
 import os
 import requests
 
@@ -23,22 +21,11 @@ from menu import Menu
 #     print(f'{key}:   {value.json()}')
 
 
-
-
-
 def show_info():
     print('jsadjf')
 
-menu = Menu(options=['Select this',
-                     'Select that',
-                     'No select this'],
-            name='snooker general 1.0')
 
-menu.add_submenu(suboptions=['what now',
-                             'do not do this again'],
-                 option=2)
-
-def determine_options():
+def determine_options(menu):
     """Determine what option the user chooses (considering all submenus)"""
     menu.show_menu()
     options = [menu.get_input()]
@@ -52,7 +39,7 @@ def determine_options():
 
     return tuple(options)  # options are already chosen and thus immutable
 
-def determine_action(options, dispatcher):
+def determine_action(options, menu, dispatcher):
     """Perform a specific task based on user input."""
     main_option = options[0]
 
@@ -63,24 +50,41 @@ def determine_action(options, dispatcher):
         if suboption == list(dispatcher[main_option])[-1]:  # last option on submenus is go back
             os.system('clear')
 
-            options = determine_options()
-            action(options, dispatcher)
+            options = determine_options(menu)
+            action(options, menu, dispatcher)
 
         action()
     else:
         action = dispatcher[main_option]
         action()
 
-dispatcher = {
-    1: show_info,
-    2: {
-        1: show_info,
-        2: show_info,
-        3: determine_action
-    },
-    3: show_info,
-    4: quit
-}
 
-options = determine_options()
-determine_action(options, dispatcher)
+def main():
+    """The main entry point of the program."""
+    menu = Menu(options=['Select this',
+                         'Select that',
+                         'No select this'],
+                name='snooker general 1.0')
+
+    menu.add_submenu(suboptions=['what now',
+                                 'do not do this again'],
+                     option=2)
+
+    dispatcher = {
+        1: show_info,
+        2: {
+            1: show_info,
+            2: show_info,
+            3: determine_action
+        },
+        3: show_info,
+        4: quit
+    }
+
+    options = determine_options(menu)
+    determine_action(options, menu, dispatcher)
+
+
+if __name__ == '__main__':
+    main()
+

@@ -1,4 +1,4 @@
-"""Constains a simple Menu class used for interacting with the user."""
+"""Contains a simple Menu class used for interacting with the user."""
 
 
 class Menu:

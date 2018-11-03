@@ -1,6 +1,6 @@
 """Create the base functionality of the project."""
 
-import requests
+from requests import get
 
 # snooker_api = dict(
 #     event = requests.get('http://api.snooker.org/?e=398'),
@@ -19,11 +19,27 @@ import requests
 # for key, value in snooker_api.items():
 #     print(f'{key}:   {value.json()}')
 
-events = requests.get('http://api.snooker.org/?t=5&s=2018')
-events = events.json()
+# events = requests.get('http://api.snooker.org/?t=5&s=2018')
+# events = events.json()
+#
+# print(requests.get('http://api.snooker.org/?rt=MoneyRankings&s=2018').json())
+# print(requests.get('http://api.snooker.org/?p=3').json())
 
-event_ids = []
-for event in events:
-    event_ids.append(event['ID'])
+def get_player(id):
+    """Return a json data about a snooker player based on his ID."""
+    player = get('http://api.snooker.org/', params={'p': id})
+    player = player.json()[0]  # the data consists of a single dictionary in a list
 
-print(sorted(event_ids))
+    return f"{player['FirstName']} {player['LastName']}"
+
+
+def get_ranking_list(year=2018, limit=32):
+    """Get season rankings to a certain position."""
+    rankings = get('http://api.snooker.org/?rt=MoneyRankings&s=2018').json()
+
+    print("{:<10} {}\n".format('Position', 'Player'))
+    for ranked_player in rankings[:limit]:
+        player = get_player(ranked_player['PlayerID'])
+        print("{:<10} {}".format(ranked_player['Position'], player))
+
+get_ranking_list()

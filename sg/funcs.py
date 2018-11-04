@@ -23,17 +23,31 @@ import requests
 # events = events.json()
 #
 # print(requests.get('http://api.snooker.org/?rt=MoneyRankings&s=2018').json())
-# print(requests.get('http://api.snooker.org/?p=3').json())
+print(requests.get('http://api.snooker.org/?e=751').json())
 
 def get_player(id):
-    """Return a json data about a snooker player based on his ID."""
+    """Return a snooker player's full name based on his ID."""
     player = requests.get('http://api.snooker.org/', params={'p': id})
     player = player.json()[0]  # the data consists of a single dictionary in a list
 
     return f"{player['FirstName']} {player['LastName']}"
 
 
-def get_ranking_list(year=2018, limit=32):
+def get_event(id):
+    """Return an event's name, start and end date based on the ID provided."""
+    event = requests.get('http://api.snooker.org/', params={'e': id})
+    event = event.json()[0] # the data consists of a single dictionary in a list (same as player's json response)
+
+    event = {
+        'name': event['Name'],
+        'start_date': event['StartDate'],
+        'end_date': event['EndDate'],
+    }
+
+    return event
+
+
+def get_rankings(year=2018, limit=32):
     """Get season rankings to a certain position."""
     rankings = requests.get('http://api.snooker.org/?rt=MoneyRankings', params={'s': year}).json()
     formatted_rankings = {}
@@ -47,4 +61,17 @@ def get_ranking_list(year=2018, limit=32):
     return formatted_rankings
 
 
-print(get_ranking_list())
+def get_season_events(year=2018):
+    """Get all events played in a season."""
+    events = requests.get('http://api.snooker.org/?t=5&', params={'s': year}).json()
+
+
+
+# To be implemented when there are any matches played really.
+def get_ongoing_matches():
+    """Look for any matches played at the time this method is called."""
+    # ongoing_matches = requests.get('http://api.snooker.org/?t=7').json()
+    # matches = {}
+
+
+

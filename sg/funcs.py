@@ -23,7 +23,7 @@ import requests
 # events = events.json()
 #
 # print(requests.get('http://api.snooker.org/?rt=MoneyRankings&s=2018').json())
-# print(requests.get('http://api.snooker.org/?e=751').json())
+print(requests.get('http://api.snooker.org/?t=6&e=398&s=2018').json())
 
 def get_player(id):
     """Return a snooker player's full name based on his ID."""
@@ -85,5 +85,3 @@ def get_ongoing_matches():
     """Look for any matches played at the time this method is called."""
     # ongoing_matches = requests.get('http://api.snooker.org/?t=7').json()
     # matches = {}
-
-print(get_season_events())

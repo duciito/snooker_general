@@ -1,5 +1,7 @@
 """Contains a simple Menu class used for interacting with the user."""
 
+import os
+
 
 class Menu:
     """Model a simple menu that provides many options to the user."""
@@ -44,3 +46,36 @@ class Menu:
 
         for number, option in self.options[main_option]['submenu'].items():
             print(f"{number}. {option}")
+
+    def determine_options(self):
+        """Determine what option the user chooses (considering all submenus)"""
+        self.show_menu()
+        options = [self.get_input()]
+
+        # Get a suboption.
+        if isinstance(self.options[options[0]], dict):  # check to see if there is a submenu
+            os.system('clear')
+
+            self.show_submenu(options[0])
+            options.append(self.get_input())
+
+        return tuple(options)  # options are already chosen and thus immutable
+
+    def determine_action(self, options, dispatcher):
+        """Perform a specific task based on user input."""
+        main_option = options[0]
+
+        if len(options) == 2:
+            suboption = options[1]
+            action = dispatcher[main_option][suboption]
+
+            if suboption == list(dispatcher[main_option])[-1]:  # last option on submenus is go back
+                os.system('clear')
+
+                options = self.determine_options()
+                self.determine_action(options, dispatcher)
+
+                action()
+        else:
+            action = dispatcher[main_option]
+            action()

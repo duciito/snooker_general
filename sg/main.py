@@ -21,6 +21,7 @@ def determine_options(menu):
 
     return tuple(options)  # options are already chosen and thus immutable
 
+
 def determine_action(options, menu, dispatcher):
     """Perform a specific task based on user input."""
     main_option = options[0]

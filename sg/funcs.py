@@ -23,7 +23,8 @@ import requests
 # events = events.json()
 #
 # print(requests.get('http://api.snooker.org/?rt=MoneyRankings&s=2018').json())
-print(requests.get('http://api.snooker.org/?t=6&e=398&s=2018').json())
+print(requests.get('http://api.snooker.org/?t=7').json()[2])
+
 
 def get_player(id):
     """Return a snooker player's full name based on his ID."""
@@ -39,7 +40,7 @@ def get_event(id):
     event = event.json()[0] # the data consists of a single dictionary in a list (same as player's json response)
 
     event = {
-        'name': event['Name'],
+        'name': event['name'],
         'start_date': event['StartDate'],
         'end_date': event['EndDate'],
     }
@@ -83,5 +84,23 @@ def get_season_events(year=2018):
 # To be implemented when there are any matches played really.
 def get_ongoing_matches():
     """Look for any matches played at the time this method is called."""
-    # ongoing_matches = requests.get('http://api.snooker.org/?t=7').json()
-    # matches = {}
+
+    ongoing_matches = requests.get('http://api.snooker.org/?t=7').json()
+    matches = []
+
+    for match in ongoing_matches:
+        event = get_event(match['EventID'])
+        player1 = get_player(match['Player1ID'])
+        player2 = get_player(match['Player2ID'])
+        score1 = match['Score1']
+        score2 = match['Score2']
+
+        matches.append({
+            'event': event,
+            'player1': player1,
+            'player2': player2,
+            'score1': score1,
+            'score2': score2,
+        })
+
+    return matches

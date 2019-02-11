@@ -19,7 +19,17 @@ def show_season_events(year=2018):
 
     print(f'\nAll events played in the current season.\n')
     for event in events:
-        print(f"{event['name']} (from {event['start_date']} to {event['end_date']})")
+        print(f" * {event['name']} (from {event['start_date']} to {event['end_date']})")
+
+
+def display_ongoing_matches():
+    """Display all matches played at the time this function is called."""
+
+    matches = funcs.get_ongoing_matches()
+
+    print(f'\nAll matches played currently.\n')
+    for match in matches:
+        print(f" * {match['player1']} -- {match['score1']}:{match['score2']} -- {match['player2']}")
 
 
 def main():
@@ -34,13 +44,13 @@ def main():
                      option=2)
 
     dispatcher = {
-        1: display_rankings,
+        1: display_ongoing_matches,
         2: {
             1: display_rankings,
             2: display_rankings,
             3: menu.determine_action
         },
-        3: display_rankings,
+        3: show_season_events,
         4: quit
     }
 

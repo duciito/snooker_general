@@ -1,45 +1,25 @@
-import os
-
+import funcs
 from menu import Menu
 
 
-def show_info():
-    print('jsadjf')
+def display_rankings(year=2018, limit=32):
+    """Display player rankings."""
+
+    rankings = funcs.get_rankings(year, limit)
+
+    print(f'\nCurrent rankings for the {year} season.\n')
+    for pos, player_name in rankings.items():
+        print(f'{pos}. {player_name}')
 
 
-def determine_options(menu):
-    """Determine what option the user chooses (considering all submenus)"""
-    menu.show_menu()
-    options = [menu.get_input()]
+def show_season_events(year=2018):
+    """Show all season events."""
 
-    # Get a suboption.
-    if isinstance(menu.options[options[0]], dict):  # check to see if there is a submenu
-        os.system('clear')
+    events = funcs.get_season_events(year)
 
-        menu.show_submenu(options[0])
-        options.append(menu.get_input())
-
-    return tuple(options)  # options are already chosen and thus immutable
-
-
-def determine_action(options, menu, dispatcher):
-    """Perform a specific task based on user input."""
-    main_option = options[0]
-
-    if len(options) == 2:
-        suboption = options[1]
-        action = dispatcher[main_option][suboption]
-
-        if suboption == list(dispatcher[main_option])[-1]:  # last option on submenus is go back
-            os.system('clear')
-
-            options = determine_options(menu)
-            action(options, menu, dispatcher)
-
-        action()
-    else:
-        action = dispatcher[main_option]
-        action()
+    print(f'\nAll events played in the current season.\n')
+    for event in events:
+        print(f"{event['name']} (from {event['start_date']} to {event['end_date']})")
 
 
 def main():
@@ -54,20 +34,19 @@ def main():
                      option=2)
 
     dispatcher = {
-        1: show_info,
+        1: display_rankings,
         2: {
-            1: show_info,
-            2: show_info,
-            3: determine_action
+            1: display_rankings,
+            2: display_rankings,
+            3: menu.determine_action
         },
-        3: show_info,
+        3: display_rankings,
         4: quit
     }
 
-    options = determine_options(menu)
-    determine_action(options, menu, dispatcher)
+    options = menu.determine_options()
+    menu.determine_action(options, dispatcher)
 
 
 if __name__ == '__main__':
     main()
-

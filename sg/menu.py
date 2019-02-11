@@ -75,7 +75,7 @@ class Menu:
                 options = self.determine_options()
                 self.determine_action(options, dispatcher)
 
-                action()
+            action()
         else:
             action = dispatcher[main_option]
             action()

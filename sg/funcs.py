@@ -40,7 +40,7 @@ def get_event(id):
     event = event.json()[0] # the data consists of a single dictionary in a list (same as player's json response)
 
     event = {
-        'name': event['name'],
+        'name': event['Name'],
         'start_date': event['StartDate'],
         'end_date': event['EndDate'],
     }
@@ -89,7 +89,7 @@ def get_ongoing_matches():
     matches = []
 
     for match in ongoing_matches:
-        event = get_event(match['EventID'])
+        event = get_event(match['EventID'])['name']
         player1 = get_player(match['Player1ID'])
         player2 = get_player(match['Player2ID'])
         score1 = match['Score1']
@@ -104,3 +104,9 @@ def get_ongoing_matches():
         })
 
     return matches
+
+
+matches = get_ongoing_matches()
+
+for match in matches:
+    print(match)

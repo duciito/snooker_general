@@ -1,3 +1,5 @@
+from itertools import groupby
+
 import funcs
 from menu import Menu
 
@@ -30,9 +32,12 @@ def display_ongoing_matches():
     if not matches:
         print('There are no matches currently played')
 
-    print('\nAll matches played currently.\n')
-    for match in matches:
-        print(f" * {match['player1']} -- {match['score1']}:{match['score2']} -- {match['player2']}")
+    print('\nAll matches currently played.\n')
+    for event, matches in groupby(matches, key=lambda each: each['event']):
+        print(f'---\n{event}\n---')
+
+        for match in matches:
+            print(f" * {match['player1']} -- {match['score1']}:{match['score2']} -- {match['player2']}")
 
 
 def main():

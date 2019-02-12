@@ -47,7 +47,7 @@ class Menu:
         for number, option in self.options[main_option]['submenu'].items():
             print(f"{number}. {option}")
 
-    def determine_options(self, post_action=False):
+    def determine_options(self, dispatcher, post_action=False):
         """Determine what option the user chooses (considering all submenus)"""
 
         if post_action:
@@ -58,7 +58,8 @@ class Menu:
                 quit()
             else:
                 os.system('clear')
-                self.determine_options()
+                options = self.determine_options(dispatcher)
+                self.determine_action(options, dispatcher)
 
         self.show_menu()
         options = [self.get_input()]
@@ -83,10 +84,12 @@ class Menu:
             if suboption == list(dispatcher[main_option])[-1]:  # last option on submenus is go back
                 os.system('clear')
 
-                options = self.determine_options()
+                options = self.determine_options(dispatcher)
                 self.determine_action(options, dispatcher)
 
             action()
+            self.determine_options(dispatcher, post_action=True)
         else:
             action = dispatcher[main_option]
             action()
+            self.determine_options(dispatcher, post_action=True)

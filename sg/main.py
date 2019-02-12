@@ -54,8 +54,10 @@ def main():
         4: quit
     }
 
-    options = menu.determine_options()
-    menu.determine_action(options, dispatcher)
+    while True:
+        options = menu.determine_options()
+        menu.determine_action(options, dispatcher)
+        options = menu.determine_options(post_action=True)
 
 
 if __name__ == '__main__':

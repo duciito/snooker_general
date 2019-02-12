@@ -47,8 +47,19 @@ class Menu:
         for number, option in self.options[main_option]['submenu'].items():
             print(f"{number}. {option}")
 
-    def determine_options(self):
+    def determine_options(self, post_action=False):
         """Determine what option the user chooses (considering all submenus)"""
+
+        if post_action:
+            print('\nHow would you like to proceed?\n', '1. Go back', '2. Quit', sep='\n')
+            answer = int(input('\nPlease enter an option: '))
+
+            if answer != 1:
+                quit()
+            else:
+                os.system('clear')
+                self.determine_options()
+
         self.show_menu()
         options = [self.get_input()]
 

@@ -89,6 +89,7 @@ class Menu:
 
             action()
             self.determine_options(dispatcher, post_action=True)
+            
         else:
             action = dispatcher[main_option]
             action()

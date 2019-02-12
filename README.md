@@ -9,7 +9,7 @@ A CLI representation of the snooker.org API with a few more things.
 * i'll most probably have to scrape a few other snooker websites for some functions to be complete
 
 #### TODO
-* add the option to go back after each action
+* ~~add the option to go back after each action~~
 * move the display functions to a separate module
 * limit showed season events to only bigger ones (will remove some irrelevant tournaments)
 * group all live matches by event

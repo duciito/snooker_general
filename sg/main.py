@@ -27,7 +27,10 @@ def display_ongoing_matches():
 
     matches = funcs.get_ongoing_matches()
 
-    print(f'\nAll matches played currently.\n')
+    if not matches:
+        print('There are no matches currently played')
+
+    print('\nAll matches played currently.\n')
     for match in matches:
         print(f" * {match['player1']} -- {match['score1']}:{match['score2']} -- {match['player2']}")
 

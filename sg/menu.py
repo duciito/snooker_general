@@ -1,6 +1,8 @@
 """Contains a simple Menu class used for interacting with the user."""
 
 import os
+import time
+from threading import Thread
 
 
 class Menu:
@@ -92,5 +94,12 @@ class Menu:
 
         else:
             action = dispatcher[main_option]
-            action()
-            self.determine_options(dispatcher, post_action=True)
+            if action.__name__ == 'display_ongoing_matches':
+                while True:
+                    action()
+                    Thread(target=self.determine_options, args=(dispatcher,), kwargs={'post_action': True}).start()
+                    time.sleep(5)
+
+            else:
+                action()
+                self.determine_options(dispatcher, post_action=True)

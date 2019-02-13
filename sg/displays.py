@@ -1,7 +1,6 @@
 """UI functions used to show info to the user."""
 
 import os
-from threading import Timer
 from itertools import groupby
 
 import funcs
@@ -42,5 +41,3 @@ def display_ongoing_matches():
 
         for match in matches:
             print(f" * {match['player1']} -- {match['score1']}:{match['score2']} -- {match['player2']}")
-
-    Timer(10, display_ongoing_matches).start()

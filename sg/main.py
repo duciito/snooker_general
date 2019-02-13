@@ -2,7 +2,6 @@ from menu import Menu
 from displays import *
 
 
-
 def main():
     """The main entry point of the program."""
     menu = Menu(options=['Select this',

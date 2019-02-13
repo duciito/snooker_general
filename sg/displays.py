@@ -1,7 +1,9 @@
 """UI functions used to show info to the user."""
 
-
+import os
+from threading import Timer
 from itertools import groupby
+
 import funcs
 
 
@@ -29,6 +31,7 @@ def display_ongoing_matches():
     """Display all matches played at the time this function is called."""
 
     matches = funcs.get_ongoing_matches()
+    os.system('clear')
 
     if not matches:
         print('There are no matches currently played')
@@ -39,3 +42,5 @@ def display_ongoing_matches():
 
         for match in matches:
             print(f" * {match['player1']} -- {match['score1']}:{match['score2']} -- {match['player2']}")
+
+    Timer(10, display_ongoing_matches).start()

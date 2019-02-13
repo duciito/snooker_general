@@ -13,5 +13,5 @@ A CLI representation of the snooker.org API with a few more things.
 * ~~group live matches by event~~
 * group event matches by round
 * auto-update of live matches
-* move the display functions to a separate module
+* ~~move the display functions to a separate module~~
 * limit showed season events to only bigger ones (will remove some irrelevant tournaments)

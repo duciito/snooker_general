@@ -1,8 +1,9 @@
 """Contains a simple Menu class used for interacting with the user."""
 
 import os
+import sys
 import time
-from threading import Thread
+import select
 
 
 class Menu:
@@ -94,12 +95,19 @@ class Menu:
 
         else:
             action = dispatcher[main_option]
+
             if action.__name__ == 'display_ongoing_matches':
                 while True:
-                    action()
-                    Thread(target=self.determine_options, args=(dispatcher,), kwargs={'post_action': True}).start()
-                    time.sleep(5)
-
+                    key_pressed = select.select([sys.stdin], [], [], 0)[0]
+                    if key_pressed:
+                        sys.stdin.readline().rstrip()
+                        os.system('clear')
+                        break
+                    else:
+                        action()
+                        print('\nPress any key to go back.')
+                        time.sleep(10)
             else:
                 action()
-                self.determine_options(dispatcher, post_action=True)
+
+            self.determine_options(dispatcher, post_action=True)

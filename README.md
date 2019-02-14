@@ -16,3 +16,4 @@ A CLI representation of the snooker.org API with a few more things.
 * ~~move the display functions to a separate module~~
 * limit showed season events to only bigger ones (will remove some irrelevant tournaments)
 * try to make all requests async in the near future
+* look into curses as it may help with cli stuff

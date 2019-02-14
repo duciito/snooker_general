@@ -19,7 +19,7 @@ class Menu:
 
     def get_input(self):
         """Get user input."""
-        answer = int(input('Please enter an option: ')) # the option is always a numerical value
+        answer = int(input('Please enter an option: '))  # the option is always a numerical value
         return answer
 
     def show_menu(self):
@@ -96,6 +96,7 @@ class Menu:
         else:
             action = dispatcher[main_option]
 
+            # will have to do it this way for now
             if action.__name__ == 'display_ongoing_matches':
                 while True:
                     key_pressed = select.select([sys.stdin], [], [], 0)[0]

@@ -17,3 +17,4 @@ A CLI representation of the snooker.org API with a few more things.
 * limit showed season events to only bigger ones (will remove some irrelevant tournaments)
 * try to make all requests async in the near future
 * look into curses as it may help with cli stuff
+* add the option to check all matches in an event

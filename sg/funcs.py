@@ -23,7 +23,7 @@ import requests
 # events = events.json()
 #
 # print(requests.get('http://api.snooker.org/?rt=MoneyRankings&s=2018').json())
-#print(requests.get('http://api.snooker.org/?t=7').json()[2])
+print(requests.get('http://api.snooker.org/?t=6&e=398').json()[0])
 
 
 def get_player(id):

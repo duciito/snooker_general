@@ -3,7 +3,7 @@
 import os
 import sys
 import time
-import select
+import threading
 
 
 class Menu:
@@ -98,17 +98,28 @@ class Menu:
 
             # will have to do it this way for now
             if action.__name__ == 'display_ongoing_matches':
-                while True:
-                    key_pressed = select.select([sys.stdin], [], [], 0)[0]
-                    if key_pressed:
-                        sys.stdin.readline().rstrip()
-                        os.system('clear')
-                        break
-                    else:
-                        action()
-                        print('\nPress any key to go back.')
-                        time.sleep(10)
+                key_pressed = False
+                while not key_pressed:
+                    action()
+                    print('\nPress any key to go back.')
+                    key_pressed = self.check_for_keypress(key_pressed)
+                    time.sleep(10)
+                    sys.stdout.flush()
             else:
                 action()
 
             self.determine_options(dispatcher, post_action=True)
+
+    def check_for_keypress(self, key_pressed):
+        """Helpful method to detect keypresses on any live actions."""
+        from pynput import keyboard
+
+        def on_key_release(key):
+            nonlocal key_pressed
+            key_pressed = True
+            return False
+
+        with keyboard.Listener(on_release=on_key_release) as listener:
+            listener.join()
+
+        return key_pressed

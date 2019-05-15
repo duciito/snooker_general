@@ -3,7 +3,8 @@
 import os
 import sys
 import time
-import threading
+
+from pynput import keyboard
 
 
 class Menu:
@@ -97,29 +98,21 @@ class Menu:
             action = dispatcher[main_option]
 
             # will have to do it this way for now
-            if action.__name__ == 'display_ongoing_matches':
-                key_pressed = False
-                while not key_pressed:
-                    action()
-                    print('\nPress any key to go back.')
-                    key_pressed = self.check_for_keypress(key_pressed)
-                    time.sleep(10)
-                    sys.stdout.flush()
+            if hasattr(action, '__name__') and action.__name__ == 'display_ongoing_matches':
+                self.handle_ongoing_matches(action)
             else:
                 action()
 
             self.determine_options(dispatcher, post_action=True)
 
-    def check_for_keypress(self, key_pressed):
-        """Helpful method to detect keypresses on any live actions."""
-        from pynput import keyboard
+    def handle_ongoing_matches(self, action):
+        """A separate method to handle ongoing matches action as it is a bit different."""
 
-        def on_key_release(key):
-            nonlocal key_pressed
-            key_pressed = True
-            return False
-
-        with keyboard.Listener(on_release=on_key_release) as listener:
-            listener.join()
-
-        return key_pressed
+        try:
+            while True:
+                action()
+                print('\nPress Ctrl-C to go back.')
+                time.sleep(10)
+                sys.stdout.flush()
+        except KeyboardInterrupt:
+            print("Exiting...")
